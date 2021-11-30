@@ -120,7 +120,7 @@
                             <p style="font-size: 20px; font-weight: 700; color:white;">Recently played</p>
                             <p style="float: right; font-size: 12px; font-weight: 700; color:white;">SEE ALL</p>
                         </div>
-                        <div class="row card-deck justify-content-around mx-n3">
+                        <div class="row card-deck justify-content-around mx-n3 recently-played-api">
                 
                             <div class="card col-sm-6 col-md-4 col-lg-2 position-relative">
                                 <div class="play-btn2 position-absolute"><i
@@ -385,6 +385,7 @@
             changeBgSize()
             });
             loadAlbums();
+            loadRecentlyPlayed ();
         }
 
         const changeBgSize = function () {
@@ -408,13 +409,13 @@
                 }
             })
             .then(response => response.json())
-            .then(data => {
-                console.log(data)
+            .then(albums => {
+                console.log(albums.data)
 
                 let firstAlbums = document.querySelector(".good-morning-section")
 
-                for (let i=0; i<data.length; i++) {
-                    const album = data[i]
+                for (let i=0; i<albums.data.length; i++) {
+                    const album = albums.data[i]
                     console.log(album)
 
                     const col = document.createElement("div")
@@ -423,7 +424,7 @@
                     col.innerHTML = `
                             <div class="play-btn position-absolute"><i class="bi bi-play-circle-fill play-circle position-relative"></i></div>
                             <img src=${album.album.cover_small} class="small-card-img ml-n3" alt="cover">
-                            <strong class="text-white mx-2">Burning Jazz-rock Fusion</strong>
+                            <strong class="text-white mx-2">${album.album.title}</strong>
                     `
                     firstAlbums.appendChild(col)
 
@@ -432,6 +433,47 @@
             })
 
             .catch(err => console.error(err))
+            .finally(() => console.log("Fetching done!"))
+        }
+
+        const loadRecentlyPlayed = () => {
+            fetch("https://deezerdevs-deezer.p.rapidapi.com/search?q=metallica", {
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+                    "x-rapidapi-key": "b9b857fcdcmsh079ce3cc21e7749p1c2be0jsn144d7c38b9ae"
+                }
+            })
+
+            .then(response => response.json())
+
+            .then(data => {
+                console.log(data)
+
+                let recentlyPlayed = document.querySelector(".recently-played-api")
+
+                for (let i=0; i<data.length; i++) {
+                    const album = data[i]
+                    console.log(album)
+
+                    const col = document.createElement("div")
+                    col.className = "card col-sm-6 col-md-4 col-lg-2 position-relative"
+                    
+                    col.innerHTML =
+                        `<div class="play-btn2 position-absolute"><i class="bi bi-play-circle-fill play-circle2 position-relative"></i></div>
+                        <img src="https://picsum.photos/300/300" class="card-img-top pt-3" alt="cover">
+                        <div class="card-body mx-n3 mt-n2">
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        </div>`
+
+                    recentlyPlayed.appendChild(col)
+
+                }
+
+            })
+
+            .catch(err => {console.error(err)})
+
             .finally(() => console.log("Fetching done!"))
         }
         
