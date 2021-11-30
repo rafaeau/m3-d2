@@ -107,78 +107,8 @@
                     <p style="font-size: 28px; font-weight: 700; color:white;">Good morning</p>
 
                     <a href="./artist-page.html">
-                        <div class="row card-deck justify-content-around">
-
-                            <div class="small-card align-items-center col-sm-6 col-md-4 col-lg-2 position-relative">
-                                <div class="play-btn position-absolute"><i
-                                        class="bi bi-play-circle-fill play-circle position-relative"></i></div>
-                                <img src="https://picsum.photos/60/60" class="small-card-img ml-n3" alt="cover">
-                                <strong class="text-white mx-2">Burning Jazz-rock Fusion</strong>
-                            </div>
-
-                            <div class="small-card align-items-center col-sm-6 col-md-4 col-lg-2 position-relative">
-                                <div class="play-btn position-absolute"><i
-                                        class="bi bi-play-circle-fill play-circle position-relative"></i></div>
-                                <img src="https://picsum.photos/60/60" class="small-card-img ml-n3" alt="cover">
-                                <strong class="text-white mx-2">Discover Weekly</strong>
-                            </div>
-
-                            <div class="small-card align-items-center col-sm-6 col-md-4 col-lg-2 position-relative">
-                                <div class="play-btn position-absolute"><i
-                                        class="bi bi-play-circle-fill play-circle position-relative"></i></div>
-                                <img src="https://picsum.photos/60/60" class="small-card-img ml-n3" alt="cover">
-                                <strong class="text-white mx-2">TGIF</strong>
-                            </div>
-
-                            <div class="small-card align-items-center col-sm-6 col-md-4 col-lg-2 position-relative">
-                                <div class="play-btn position-absolute"><i
-                                        class="bi bi-play-circle-fill play-circle position-relative"></i></div>
-                                <img src="https://picsum.photos/60/60" class="small-card-img ml-n3" alt="cover">
-                                <strong class="text-white mx-2">Chilling</strong>
-                            </div>
-
-                            <div class="small-card align-items-center col-sm-6 col-md-4 col-lg-2 position-relative">
-                                <div class="play-btn position-absolute"><i
-                                        class="bi bi-play-circle-fill play-circle position-relative"></i></div>
-                                <img src="https://picsum.photos/60/60" class="small-card-img ml-n3" alt="cover">
-                                <strong class="text-white mx-2">Music for Studying</strong>
-                            </div>
-
-                            <div class="small-card align-items-center col-sm-6 col-md-4 col-lg-2 position-relative">
-                                <div class="play-btn position-absolute"><i
-                                        class="bi bi-play-circle-fill play-circle position-relative"></i></div>
-                                <img src="https://picsum.photos/60/60" class="small-card-img ml-n3" alt="cover">
-                                <strong class="text-white mx-2">FKJ</strong>
-                            </div>
-
-                            <div class="small-card align-items-center col-sm-6 col-md-4 col-lg-2 position-relative">
-                                <div class="play-btn position-absolute"><i
-                                        class="bi bi-play-circle-fill play-circle position-relative"></i></div>
-                                <img src="https://picsum.photos/60/60" class="small-card-img ml-n3" alt="cover">
-                                <strong class="text-white mx-2">Oceanvs Orientalis</strong>
-                            </div>
-
-                            <div class="small-card align-items-center col-sm-6 col-md-4 col-lg-2 position-relative">
-                                <div class="play-btn position-absolute"><i
-                                        class="bi bi-play-circle-fill play-circle position-relative"></i></div>
-                                <img src="https://picsum.photos/60/60" class="small-card-img ml-n3" alt="cover">
-                                <strong class="text-white mx-2">Nicola Cruz</strong>
-                            </div>
-
-                            <div class="small-card align-items-center col-sm-6 col-md-4 col-lg-2 position-relative">
-                                <div class="play-btn position-absolute"><i
-                                        class="bi bi-play-circle-fill play-circle position-relative"></i></div>
-                                <img src="https://picsum.photos/60/60" class="small-card-img ml-n3" alt="cover">
-                                <strong class="text-white mx-2">Carrot Green</strong>
-                            </div>
-
-                            <div class="small-card align-items-center col-sm-6 col-md-4 col-lg-2 position-relative">
-                                <div class="play-btn position-absolute"><i
-                                        class="bi bi-play-circle-fill play-circle position-relative"></i></div>
-                                <img src="https://picsum.photos/60/60" class="small-card-img ml-n3" alt="cover">
-                                <strong class="text-white mx-2">Céu</strong>
-                            </div>
-
+                        <div class="row card-deck justify-content-around good-morning-section">
+                            <!-- API generated -->
                         </div>
                     </a>
 
@@ -454,6 +384,7 @@
             $(window).bind('resize',function(){
             changeBgSize()
             });
+            loadAlbums();
         }
 
         const changeBgSize = function () {
@@ -468,6 +399,41 @@
             }
         }
 
+        const loadAlbums = () => {
+            fetch("https://deezerdevs-deezer.p.rapidapi.com/search?q=eminem", {
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+                    "x-rapidapi-key": "b9b857fcdcmsh079ce3cc21e7749p1c2be0jsn144d7c38b9ae"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+
+                let firstAlbums = document.querySelector(".good-morning-section")
+
+                for (let i=0; i<data.length; i++) {
+                    const album = data[i]
+                    console.log(album)
+
+                    const col = document.createElement("div")
+                    col.className = "small-card align-items-center col-sm-6 col-md-4 col-lg-2 position-relative"
+                    
+                    col.innerHTML = `
+                            <div class="play-btn position-absolute"><i class="bi bi-play-circle-fill play-circle position-relative"></i></div>
+                            <img src=${album.album.cover_small} class="small-card-img ml-n3" alt="cover">
+                            <strong class="text-white mx-2">Burning Jazz-rock Fusion</strong>
+                    `
+                    firstAlbums.appendChild(col)
+
+                }
+
+            })
+
+            .catch(err => console.error(err))
+            .finally(() => console.log("Fetching done!"))
+        }
         
 
     </script>
